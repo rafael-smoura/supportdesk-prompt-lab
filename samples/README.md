@@ -1,9 +1,8 @@
-# Samples
+# Exemplos JSON
 
-Todos os exemplos deste diretório estão identificados como **DEMO / ilustrativos**.
+- `login_comparison.json`: comparação v1/v2 do cenário de acesso ao portal, com configurações, respostas e rubrica.
+- `demo_outputs.json`: estrutura dos quatro tipos de saída no modo local.
+- `demo_comparison.json`: exemplo de comparação sem chamada externa.
+- `rubric_template.json`: formato esperado para as três avaliações.
 
-- `example_4_outputs_DEMO.json`: os quatro contratos de saída, com dados determinísticos.
-- `example_comparison_DEMO_illustrative.json`: estrutura de uma comparação com notas inventadas somente para demonstrar o formato. Não é evidência de LLM real.
-- `rubric_input_TEMPLATE.json`: template para `python main.py --compare --evaluations samples/rubric_input_TEMPLATE.json`; **substitua as notas e justificativas** depois de ler as saídas reais.
-
-Depois de configurar sua chave, gerar respostas reais e avaliá-las, exporte o arquivo consolidado como `comparacao_real_analisada.json` e acrescente sua análise a `docs/RESULTADO_DO_EXPERIMENTO.md`.
+Os arquivos do modo local servem para testar os contratos JSON; a comparação do cenário de login utiliza respostas de uma execução com a GroqCloud.

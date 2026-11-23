@@ -1,0 +1,143 @@
+{
+  "id": 1,
+  "timestamp": "2026-11-23T21:34:19+00:00",
+  "scenario_key": "ebebb4402241bd57d00d0087cf57b537deacb78c580652a5b253defbf5b34257",
+  "generation_ids": [
+    2,
+    1
+  ],
+  "summary": {
+    "v1_average": 2.67,
+    "v2_average": 3.0,
+    "delta_v2_minus_v1": 0.33,
+    "higher_scored_version": "v2",
+    "method": "Média simples de clareza, adequação e acionabilidade; avaliação humana.",
+    "disclaimer": "Notas humanas não são teste estatístico nem prova automática de superioridade."
+  },
+  "results": [
+    {
+      "id": 2,
+      "timestamp": "2026-11-23T21:31:42+00:00",
+      "customer_id": "c1",
+      "profile": {
+        "id": "c1",
+        "name": "Ana",
+        "technical_level": "leigo",
+        "communication_style": "didático",
+        "channel": "chat"
+      },
+      "ticket": "Não consigo entrar no portal de atendimento desde esta manhã. Aparece uma mensagem de erro ao fazer login.",
+      "content_type": "diagnosis",
+      "prompt_version": "v1",
+      "prompt_hash": "338160cd5d921ca05ecdee7c6800fbc22ab94574f803dc0d03892d7797a17815",
+      "provider": "openai_compatible",
+      "model": "openai/gpt-oss-20b",
+      "settings": {
+        "api_url": "https://api.groq.com/openai/v1/chat/completions",
+        "temperature": 0.2,
+        "max_tokens": 1300,
+        "json_mode": true
+      },
+      "scenario_key": "ebebb4402241bd57d00d0087cf57b537deacb78c580652a5b253defbf5b34257",
+      "output": {
+        "hypotheses": [
+          "Credenciais inválidas ou senha expirou",
+          "Conta bloqueada por tentativas de login falhadas",
+          "Manutenção ou indisponibilidade do portal",
+          "Problema de cache ou cookies no navegador",
+          "Falha de rede ou bloqueio de IP",
+          "Erro de certificado SSL ou configuração do servidor"
+        ],
+        "evidence": [
+          "Mensagem de erro ao fazer login no portal de atendimento"
+        ],
+        "missing_information": [
+          "Texto exato da mensagem de erro",
+          "Captura de tela ou log de erro",
+          "Navegador e versão utilizados",
+          "Data e hora exatas do incidente",
+          "Se o usuário tentou login em outro dispositivo ou rede",
+          "Status da conta (ativa, bloqueada, expirada)",
+          "Se houve alteração recente de senha ou política de segurança",
+          "Logs de servidor ou status de manutenção do portal"
+        ],
+        "probable_conclusion": "A causa mais provável é que as credenciais estejam inválidas ou a conta esteja bloqueada, mas sem a mensagem de erro exata e logs não é possível confirmar com certeza."
+      },
+      "evaluation": {
+        "clarity": {
+          "score": 4,
+          "justification": "A separação entre hipóteses, evidências e conclusão organiza a leitura. Termos como SSL e logs, porém, exigem explicação adicional."
+        },
+        "customer_fit": {
+          "score": 2,
+          "justification": "A solicitação de logs de servidor e a menção a certificado SSL não são adequadas a uma cliente leiga sem apoio técnico."
+        },
+        "actionability": {
+          "score": 2,
+          "justification": "A resposta lista causas e dados faltantes, mas não ordena verificações simples nem indica uma primeira ação para a cliente."
+        }
+      }
+    },
+    {
+      "id": 1,
+      "timestamp": "2026-11-23T21:31:17+00:00",
+      "customer_id": "c1",
+      "profile": {
+        "id": "c1",
+        "name": "Ana",
+        "technical_level": "leigo",
+        "communication_style": "didático",
+        "channel": "chat"
+      },
+      "ticket": "Não consigo entrar no portal de atendimento desde esta manhã. Aparece uma mensagem de erro ao fazer login.",
+      "content_type": "diagnosis",
+      "prompt_version": "v2",
+      "prompt_hash": "26ddf0fd2d1c748c557e96d5c27404afa0dba3d4d06f73e531e74a9d79c4985e",
+      "provider": "openai_compatible",
+      "model": "openai/gpt-oss-20b",
+      "settings": {
+        "api_url": "https://api.groq.com/openai/v1/chat/completions",
+        "temperature": 0.2,
+        "max_tokens": 1300,
+        "json_mode": true
+      },
+      "scenario_key": "ebebb4402241bd57d00d0087cf57b537deacb78c580652a5b253defbf5b34257",
+      "output": {
+        "hypotheses": [
+          "Credenciais incorretas ou expiradas",
+          "Conta bloqueada por tentativas de login",
+          "Portal de atendimento fora do ar",
+          "Problema de rede ou DNS",
+          "Cache ou cookies corrompidos no navegador",
+          "Falha de autenticação de dois fatores"
+        ],
+        "evidence": [
+          "Mensagem de erro ao fazer login no portal de atendimento"
+        ],
+        "missing_information": [
+          "Texto completo da mensagem de erro",
+          "Tipo de navegador e versão",
+          "Se o login funciona em outro dispositivo ou navegador",
+          "Se houve alteração recente de senha ou tentativa de redefinição",
+          "Se a conta está bloqueada ou em manutenção",
+          "Se há mensagens de erro de rede ou timeout"
+        ],
+        "probable_conclusion": "Não é possível determinar a causa exata sem mais informações; a causa mais provável é erro de credenciais ou bloqueio de conta, mas outras causas não podem ser descartadas."
+      },
+      "evaluation": {
+        "clarity": {
+          "score": 3,
+          "justification": "A resposta está dividida em campos claros, mas usa DNS, autenticação de dois fatores e timeout sem explicar os termos."
+        },
+        "customer_fit": {
+          "score": 3,
+          "justification": "Perguntar pela mensagem do erro e por tentativas em outro navegador é acessível à cliente; ainda há linguagem técnica sem explicação."
+        },
+        "actionability": {
+          "score": 3,
+          "justification": "Ajuda a coletar a mensagem de erro e verificar outro navegador ou dispositivo, mas não apresenta uma ordem explícita de ações."
+        }
+      }
+    }
+  ]
+}

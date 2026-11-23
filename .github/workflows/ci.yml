@@ -18,11 +18,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - name: Instalar dependencias
-        run: python -m pip install -r requirements-dev.txt
+        run: python -m pip install -r requirements.txt
       - name: Compilar sintaxe
         run: python -m compileall -q backend main.py run.py
       - name: Verificar estrutura
         run: python scripts/verify_structure.py
+      - name: Conferir pacote de entrega
+        run: python scripts/preflight.py --strict
       - name: Executar testes
         env:
           APP_ENV: testing

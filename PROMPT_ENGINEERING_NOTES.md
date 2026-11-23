@@ -1,59 +1,56 @@
-# Engenharia de prompt — decisões e limitações
+# Prompt engineering
 
-## Objetivo da experiência
+## Problema
 
-Avaliar se uma instrução mais contextual e restritiva melhora clareza, adequação ao nível técnico e acionabilidade sem alterar o caso analisado nem a configuração do modelo. O sistema produz quatro conteúdos independentes, todos em JSON validado pelo backend.
+O nível de conhecimento e o canal de atendimento mudam a forma como uma orientação técnica deve ser apresentada. O experimento compara um prompt básico (**v1**) com uma versão que explicita como usar o perfil do cliente (**v2**).
 
-## Estratégias implementadas
+A hipótese é que uma instrução mais específica produza respostas mais adequadas sem perder a estrutura do diagnóstico.
 
-| Estratégia | Aplicação no código |
+## Construção dos prompts
+
+Os prompts ficam em `backend/services/prompts.py`. Para cada execução, o backend combina o perfil, o ticket e o tipo de resposta solicitado.
+
+| Técnica | Como foi usada |
 |---|---|
-| Persona | O papel e os limites do analista são definidos na mensagem `system`. |
-| Context setting | Identificador e atributos do perfil, canal e texto do ticket aparecem em JSON de contexto. |
-| Decomposição | Diagnóstico usa hipóteses, evidências, dados faltantes e conclusão; tarefas diferentes possuem contratos próprios. |
-| Formato de saída | Cada tarefa exige um objeto JSON com campos e tipos pré-definidos. |
-| Versionamento | `v1` e `v2` são textos distintos; o hash das mensagens fica registrado por execução. |
-| Robustez | A v2 delimita fatos, hipóteses e incertezas, orienta linguagem e trata o ticket como dados não confiáveis. |
+| Persona prompting | Define a função do assistente de suporte e os limites do atendimento. |
+| Context setting | Inclui nível técnico, estilo de comunicação, canal e descrição do problema. |
+| Decomposição | Separa hipóteses, evidências, informações ausentes e conclusão no diagnóstico. |
+| Output formatting | Define os campos JSON obrigatórios para cada tipo de resposta. |
+| Versionamento | Identifica `v1` e `v2` e registra um hash do prompt utilizado. |
 
-## As duas versões
+**v1:** usa o contexto disponível e exige o formato de saída, com poucas instruções sobre adaptação de linguagem.
 
-**v1 — Base:** papel, tarefa, contexto completo e contrato JSON. Não especifica explicitamente como converter perfil em estilo ou como priorizar decisões seguras.
+**v2:** acrescenta regras por nível técnico e canal, pede distinção entre fatos e possibilidades e orienta o uso de ações simples e verificáveis. O ticket é tratado como dado de entrada, não como uma fonte de instruções para o sistema.
 
-**v2 — Contextual:** mantém o mesmo cenário e contrato, acrescentando instruções específicas por nível técnico, estilo e canal. Exige distinção entre evidência e hipótese, priorização de passos reversíveis, informação faltante e escalonamento humano quando necessário. A saída deve ser verificável, não o raciocínio interno do modelo.
+## Tipos de conteúdo
 
-A hipótese é que v2 seja mais útil para o cliente. Isso só pode ser confirmado **para o cenário testado** depois da execução com modelo real, leitura dos resultados e notas justificadas. O código não presume vencedor.
+- `diagnosis`: `hypotheses`, `evidence`, `missing_information`, `probable_conclusion`.
+- `resolution`: `steps` com `number`, `action` e `check`, além de `escalation`.
+- `questions`: perguntas com `priority`, `question` e `reason`.
+- `flowchart`: `ascii_flow` e `next_action`.
 
-## Estratégias por conteúdo
+Cada tipo tem uma instrução específica, mas reutiliza o contexto e as regras gerais. A validação do JSON acontece antes do registro da execução.
 
-**diagnosis:** hypotheses, evidence, missing_information, probable_conclusion. A evidência deve vir do ticket e não de suposições. A conclusão declara incerteza se faltarem dados.
+## Método de comparação
 
-**resolution:** steps (number, action, check) e escalation. Gera um procedimento que pode ser acompanhado e verificado, respeitando risco e perfil.
+As duas versões recebem o mesmo perfil, ticket, tipo de conteúdo, provedor, modelo e parâmetros. O backend registra `scenario_key`, `prompt_hash` e as configurações da chamada. A comparação exige versões diferentes e o mesmo cenário.
 
-**questions:** questions (priority, question, reason), máximo de cinco. Prioriza somente dados necessários para progredir.
+A rubrica usa três critérios, com notas inteiras de 1 a 5:
 
-**flowchart:** ascii_flow e next_action. Representa a sequência de decisões em texto monoespaçado com ramificações.
+| Critério | Pergunta |
+|---|---|
+| Clareza | O texto é organizado e compreensível? |
+| Adequação | A linguagem e o nível de detalhe combinam com o cliente? |
+| Acionabilidade | Fica claro o que fazer a seguir? |
 
-## Experimento reproduzível
+Cada nota precisa de uma justificativa ligada ao conteúdo da resposta. A média é simples, com o mesmo peso para os três critérios.
 
-- Mesmo `customer_id`, texto do ticket normalizado, tipo de conteúdo, provedor, modelo, URL quando aplicável, temperatura, limite de tokens e JSON mode.
-- A mudança principal é `prompt_version`, registrada com `prompt_hash` e `scenario_key`.
-- Avaliar separadamente: clarity, customer_fit, actionability (1–5, cada nota acompanhada de justificativa escrita).
-- Comparação persistida no banco e exportada para JSON com saídas completas e avaliações.
-- Se duas respostas forem iguais, reconhecer empate; não criar melhoria artificial.
+A comparação registrada em [`samples/login_comparison.json`](samples/login_comparison.json) utiliza respostas geradas pela GroqCloud com `openai/gpt-oss-20b`. A análise está em [`docs/RESULTADO_DO_EXPERIMENTO.md`](docs/RESULTADO_DO_EXPERIMENTO.md).
 
-## Atenção ao modo demo
+## Limitações
 
-`DemoProvider` é um substituto determinístico usado em desenvolvimento e CI. As respostas vêm de código Python, não de uma LLM. Seus resultados, inclusive as amostras no diretório `samples/`, são **apenas ilustrativos** e não cumprem a evidência de comparação real solicitada no edital.
-
-## Riscos e limitações
-
-- Modelos podem retornar JSON malformado, campos extras, conteúdo incompleto ou alucinar. O validador bloqueia formatos inválidos, mas não confirma veracidade técnica.
-- `temperature=0.2` reduz aleatoriedade, mas não torna a saída determinística entre chamadas.
-- Uma comparação de um ticket e um avaliador não mede significância; serve para demonstrar método.
-- O campo do ticket é texto não confiável; o prompt declara isso, mas instruções adversariais ainda podem afetar modelos.
-- Cotas, modelos disponíveis e preços dos provedores podem mudar.
-- Para produção, seria necessário observabilidade de latência/custo, avaliação com mais casos, autenticação e tratamento de dados sensíveis.
-
-## Registro posterior da análise real
-
-Preencher `docs/RESULTADO_DO_EXPERIMENTO.md` depois de executar a API e revisar os resultados. Incluir IDs e datas reais, modelo, valores de config, rubricas, justificativas com trechos/observações e a conclusão fundamentada (inclusive se v2 não for melhor).
+- A temperatura reduzida não elimina variações nas respostas.
+- O validador garante a estrutura, mas não verifica se um diagnóstico está correto.
+- A avaliação de um cenário não basta para afirmar que uma versão é melhor em qualquer situação.
+- O modo `demo` serve apenas para desenvolvimento e testes, sem chamada a um modelo externo.
+- O sistema não recupera documentos externos. RAG seria útil para consultar manuais ou procedimentos internos, desde que fosse possível verificar a origem das informações e avaliar a fidelidade das respostas.

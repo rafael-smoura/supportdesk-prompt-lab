@@ -19,6 +19,10 @@ class ComparisonService:
         record.evaluation = validate_rubric(rubric)
         db.session.commit()
         export_json("generation", record.id, record.to_dict())
+        # Uma edição na rubrica invalida o resumo de comparações existentes.
+        for comparison in Comparison.query.all():
+            if record.id in comparison.run_ids:
+                self.compare(comparison.run_ids)
         return record
 
     def compare(self, ids):

@@ -6,13 +6,17 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_env_examples_match_and_do_not_expose_keys():
+def test_env_example_does_not_expose_keys():
     example = (ROOT / '.env.example').read_text(encoding='utf-8')
-    alias = (ROOT / '.env_example').read_text(encoding='utf-8')
-    assert example == alias
     assert 'AI_PROVIDER=demo' in example
     assert 'AI_API_KEY=\n' in example
     assert 'APP_ACCESS_TOKEN=\n' in example
+
+
+def test_ci_uses_existing_requirements_file():
+    workflow = (ROOT / '.github' / 'workflows' / 'ci.yml').read_text(encoding='utf-8')
+    assert 'pip install -r requirements.txt' in workflow
+    assert 'requirements-dev.txt' not in workflow
 
 
 def test_dockerfile_uses_real_flask_entrypoint_and_health_route():

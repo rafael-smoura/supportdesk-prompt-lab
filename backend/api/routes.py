@@ -166,9 +166,7 @@ def _export(kind, id_, loader):
         return jsonify({"error": str(exc)}), 404
     if data is None:
         return jsonify({"error": "Registro não encontrado"}), 404
-    path = Path(current_app.config["EXPORT_DIR"]) / f"{kind}_{id_}.json"
-    if not path.is_file():
-        path = export_json(kind, id_, data)
+    path = export_json(kind, id_, data)
     # Evita manter o arquivo aberto durante o download: no Windows, o bloqueio
     # impediria os.replace() ao atualizar uma comparação já exportada.
     content = BytesIO(path.read_bytes())

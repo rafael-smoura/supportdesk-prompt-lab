@@ -12,7 +12,7 @@ def validate_rubric(payload):
         score = item["score"]
         justification = item["justification"]
         if (type(score) is not int or not 1 <= score <= 5 or not isinstance(justification, str)
-                or not 5 <= len(justification.strip()) <= 400):
+                or not 20 <= len(justification.strip()) <= 400):
             raise ValueError(f"Nota ou justificativa inválida em {criterion}")
         result[criterion] = {"score": score, "justification": justification.strip()}
     return result

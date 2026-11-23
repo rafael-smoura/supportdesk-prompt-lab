@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from backend.extensions import db
 from backend.models.entities import Generation
 from backend.providers.factory import create_provider
+from backend.providers.base import ProviderError
 from backend.repositories.generations import GenerationRepository
 from backend.services.exporter import export_json
 from backend.services.prompts import build_messages
@@ -45,7 +46,11 @@ class GenerationService:
             current_app.logger.info("cache_hit run_id=%s", cached.id)
             return cached, True
         provider = self.provider or create_provider(self.config)
-        output = validate_output(content_type, provider.generate(messages, content_type))
+        raw_output = provider.generate(messages, content_type)
+        try:
+            output = validate_output(content_type, raw_output)
+        except (ValueError, KeyError, TypeError) as error:
+            raise ProviderError("O modelo respondeu fora do formato JSON esperado", 502) from error
         record = Generation(
             customer_id=profile["id"], profile=profile, ticket=ticket,
             content_type=content_type, prompt_version=version,

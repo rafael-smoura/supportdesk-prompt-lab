@@ -125,6 +125,12 @@ def test_comparison_rejects_different_model_settings(client,payload,app):
     assert client.post('/api/v1/comparisons',json={'generation_ids':[first['id'],second['id']]}).status_code == 400
 
 
+def _rubric_with_short_justification():
+    data = _rubric()
+    data['clarity']['justification'] = 'muito ruim'
+    return data
+
+
 def test_rubric_validation(client,payload):
     record=_generate(client,payload)
     url=f"/api/v1/runs/{record['id']}/evaluation"
@@ -132,6 +138,7 @@ def test_rubric_validation(client,payload):
     assert client.put(url,json=_rubric(6)).status_code == 400
     assert client.put(url,json=_rubric(True)).status_code == 400
     bad=_rubric();bad['clarity']['justification']='a'
+    assert client.put(url,json=_rubric_with_short_justification()).status_code == 400
     assert client.put(url,json=bad).status_code == 400
     assert client.put('/api/v1/runs/777/evaluation',json=_rubric()).status_code == 404
 
@@ -172,3 +179,31 @@ def test_export_allows_re_evaluation_with_download_response_alive(client, payloa
     assert client.put(url, json=_rubric(5)).status_code == 200
     updated = client.get(f"/api/v1/runs/{run_id}/export")
     assert json.loads(updated.data)["evaluation"]["clarity"]["score"] == 5
+
+
+def test_comparison_recalculates_after_evaluation_edit(client, payload):
+    entries = client.post('/api/v1/experiments', json=payload).json['runs']
+    ids = [item['record']['id'] for item in entries]
+    for run_id in ids:
+        assert client.put(f'/api/v1/runs/{run_id}/evaluation', json=_rubric(4)).status_code == 200
+    record = client.post('/api/v1/comparisons', json={'generation_ids': ids}).json
+    assert record['summary']['v2_average'] == 4
+    assert client.put(f'/api/v1/runs/{ids[1]}/evaluation', json=_rubric(2)).status_code == 200
+    updated = client.get(f"/api/v1/comparisons/{record['id']}").json
+    assert updated['summary']['v2_average'] == 2
+    exported = client.get(f"/api/v1/comparisons/{record['id']}/export")
+    assert json.loads(exported.data)['summary']['delta_v2_minus_v1'] == -2
+    assert json.loads(exported.data)['results'][1]['evaluation']['clarity']['score'] == 2
+
+
+def test_bad_model_output_is_server_error(client, payload, monkeypatch):
+    from backend.services import generation
+
+    class BadProvider:
+        def generate(self, messages, content_type):
+            return {'unexpected': 'invalid schema'}
+
+    monkeypatch.setattr(generation, 'create_provider', lambda config: BadProvider())
+    response = client.post('/api/v1/runs', json=payload)
+    assert response.status_code == 502
+    assert 'JSON' in response.json['error']
