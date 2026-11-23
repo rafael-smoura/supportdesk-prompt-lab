@@ -9,7 +9,8 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
-instance/
+instance/*
+!instance/.gitkeep
 *.sqlite3
 *.db
 .DS_Store

@@ -7,7 +7,9 @@ from backend.extensions import db
 
 def create_app(overrides=None):
     root = Path(__file__).resolve().parents[1]
-    app = Flask(__name__, instance_path=str(root / "instance"), static_folder=str(root / "frontend"), static_url_path="")
+    instance_dir = root / "instance"
+    instance_dir.mkdir(parents=True, exist_ok=True)
+    app = Flask(__name__, instance_path=str(instance_dir), static_folder=str(root / "frontend"), static_url_path="")
     app.config.from_object(Config)
     if overrides:
         app.config.update(overrides)

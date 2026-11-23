@@ -30,3 +30,10 @@ def test_preflight_runs_without_secrets_or_real_llm():
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert 'Pré-verificação concluída' in result.stdout
+
+
+def test_gitignore_keeps_directory_but_not_database():
+    ignore = (ROOT / '.gitignore').read_text(encoding='utf-8')
+    assert 'instance/*' in ignore
+    assert '!instance/.gitkeep' in ignore
+    assert (ROOT / 'instance' / '.gitkeep').is_file()
