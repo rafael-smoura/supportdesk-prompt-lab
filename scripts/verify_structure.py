@@ -21,7 +21,12 @@ REQUIRED = [
 for relative in REQUIRED:
     assert (ROOT / relative).is_file(), f'Arquivo ausente: {relative}'
 
-assert not (ROOT / '.env').exists(), 'Não distribua o arquivo .env'
+# O .env local pode existir; o importante é que nunca esteja versionado.
+import subprocess
+if (ROOT / '.git').exists():
+    tracked = subprocess.run(['git', 'ls-files', '--error-unmatch', '.env'], cwd=ROOT,
+                             capture_output=True, text=True).returncode == 0
+    assert not tracked, 'O arquivo .env não pode ser versionado'
 profiles = json.loads((ROOT / 'data/profiles.json').read_text(encoding='utf-8'))
 assert 3 <= len(profiles) <= 5
 for profile in profiles:
@@ -32,8 +37,15 @@ for profile in profiles:
 assert json.loads((ROOT / 'data/tickets.json').read_text(encoding='utf-8'))
 for sample in (ROOT / 'samples').glob('*.json'):
     data=json.loads(sample.read_text(encoding='utf-8'))
-    if sample.name != 'rubric_input_TEMPLATE.json':
-        assert data.get('illustrative') is True
+    if sample.name == 'rubric_input_TEMPLATE.json':
+        continue
+    if sample.name == 'comparacao_real_analisada.json':
+        assert data.get('illustrative') is not True, 'Comparação real não pode ser ilustrativa'
+        assert len(data.get('results', [])) == 2, 'Comparação real precisa de duas versões'
+        assert {r.get('prompt_version') for r in data['results']} == {'v1', 'v2'}
+        assert all(r.get('provider') != 'demo' and r.get('evaluation') for r in data['results'])
+    else:
+        assert data.get('illustrative') is True, f'Marque o exemplo {sample.name} como ilustrativo'
 
 assert compileall.compile_dir(str(ROOT / 'backend'), quiet=1)
 assert compileall.compile_dir(str(ROOT / 'tests'), quiet=1)
