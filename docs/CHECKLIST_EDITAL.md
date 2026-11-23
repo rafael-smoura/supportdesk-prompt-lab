@@ -21,10 +21,11 @@ Legenda: **Implementado** = existe no código, requer execução local para vali
 | requirements e README | Implementado | `requirements*.txt`, `README.md` |
 | Diretório samples com JSON | Implementado | `samples/` com exemplos **simulados** |
 | Notas de engenharia de prompt | Implementado | `PROMPT_ENGINEERING_NOTES.md` |
-| Histórico de commits do próprio candidato | **Pendente externo** | `docs/COMMITS_SUGERIDOS.md`; publicar commits reais |
+| Histórico Git local do pacote | Implementado (preparação) | `.git/`, `docs/HISTORICO_GIT_REAL.md`; não é histórico pessoal do candidato |
+| Histórico de commits próprios no GitHub | **Pendente externo** | `docs/GIT_E_GITHUB.md`; publicar e fazer commits reais de suas mudanças |
 | Testes automatizados | Implementado (código) | `tests/`; executar na sua máquina e CI |
 | Frontend web, API REST, ORM, Docker | Extra | `frontend/`, `backend/api/`, `models/`, Dockerfile |
 | CI no GitHub | Pendente ativação | workflow pronto; executar após push |
 | Deploy em nuvem | Extra pendente externo | instruções no `docs/PROXIMOS_PASSOS.md` |
 
-**Conclusão:** o pacote cobre o desenho e as funcionalidades exigidas, mas o edital exige **execução real documentada** e um histórico Git legítimo. Não descreva o desafio como 100% finalizado antes dessas duas evidências.
+**Conclusão:** o pacote cobre o desenho e as funcionalidades exigidas, mas o edital exige **execução real documentada** e um histórico Git pessoal verificável no remoto. Não descreva o desafio como 100% finalizado antes dessas duas evidências.

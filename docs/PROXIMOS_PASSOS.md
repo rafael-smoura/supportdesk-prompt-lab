@@ -56,16 +56,17 @@ Se o PowerShell bloquear a ativação, use `.\.venv\Scripts\python.exe run.py` (
 
 ## Etapa D — Git e GitHub (obrigatório histórico verificável)
 
-- [ ] Criar repositório **seu** no GitHub, preferencialmente público apenas depois de revisar dados.
-- [ ] Na pasta local: `git init` e `git branch -M main` (se não existir repositório).
-- [ ] Conferir `git status` e `git check-ignore .env`; o `.env` deve estar ignorado.
-- [ ] Criar seus commits reais por funcionalidades/ajustes efetuados, seguindo `docs/COMMITS_SUGERIDOS.md` apenas como roteiro.
-- [ ] Associar repositório: `git remote add origin https://github.com/SEU_USUARIO/NOME_REPO.git`.
-- [ ] Enviar: `git push -u origin main` após os commits.
-- [ ] Confirmar na aba **Actions** se CI passou (o primeiro push dispara o workflow).
-- [ ] Conferir no GitHub que não foram enviados `.env`, chaves ou `instance/history/`.
+**Este ZIP já contém `.git/` com commits reais de preparação do pacote.** Não execute `git init` se a pasta `.git` estiver presente. Esses commits não são atribuídos ao candidato nem retrodatados. O histórico do GitHub só existirá após você criar o remoto e fazer o push.
 
-**Não** altere datas de commit para simular trabalho anterior. O histórico deve representar suas alterações e seu domínio da implementação.
+- [ ] Verificar `Test-Path .git` e `git log --oneline` no PowerShell.
+- [ ] Configurar `git config --local user.name` e `git config --local user.email` para **seus futuros commits**.
+- [ ] Rodar `python scripts/preflight.py` e `git check-ignore .env`.
+- [ ] Criar um repositório remoto vazio no GitHub.
+- [ ] Associar `origin` e executar `git push -u origin main`.
+- [ ] Fazer commits próprios de alterações e da comparação real, depois de revisar o conteúdo.
+- [ ] Confirmar que o CI da aba Actions passa e que nenhum segredo foi publicado.
+
+**Guia completo:** `docs/GIT_E_GITHUB.md`. Não altere datas de commit nem reatribua autoria para simular trabalho anterior.
 
 ## Etapa E — CI no GitHub (fornecido; ativação depende do push)
 
@@ -118,4 +119,4 @@ O arquivo `.github/workflows/ci.yml` instala as dependências e roda `compileall
 4. **Arquitetura:** explicar `routes` → `services` → `providers` / `repositories`, model, frontend e banco.
 5. **Limitações:** não há autenticação multiusuário, inferência tem custo/cotas, notas são humanas, deploy gratuito pode ser efêmero.
 
-**Status honesto do pacote:** código e documentação estão preparados. Credenciais, consumo de API real, rubricas escritas por você, GitHub/CI online e deploy só podem ser concluídos com seu acesso e sua execução.
+**Status honesto do pacote:** código e documentação estão preparados e existe um histórico Git local de preparação do pacote. Credenciais, consumo de API real, rubricas escritas por você, publicação no GitHub/CI online e deploy só podem ser concluídos com seu acesso e sua execução.

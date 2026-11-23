@@ -18,7 +18,7 @@ Copy-Item .env.example .env
 python run.py
 ```
 
-Acesse http://127.0.0.1:5000. O `.env.example` inicia em `AI_PROVIDER=demo` e dispensa chave de API.
+Acesse http://127.0.0.1:5000. O `.env.example` inicia em `AI_PROVIDER=demo` e dispensa chave de API. **Se já tiver um `.venv` e um `.env` funcionando, não precisa recriá-los**: basta atualizar os arquivos alterados e executar os testes.
 
 No Linux/macOS, use `source .venv/bin/activate` e `cp .env.example .env`.
 
@@ -69,6 +69,7 @@ Em modo `demo`, as respostas são simuladas e a avaliação é útil apenas para
 ```powershell
 python -m pytest -q
 python -m compileall -q backend main.py run.py
+python scripts/preflight.py
 ```
 
 Os testes não consomem créditos de IA: a configuração é forçada para `demo` ou adaptadores HTTP simulados.
@@ -161,7 +162,13 @@ As execuções são armazenadas em SQLite e exportadas como `generation_{id}.jso
 - A qualidade de v1 e v2 é julgada por uma rubrica humana; a aplicação **não atribui notas automaticamente**.
 - A aplicação não solicita nem registra o raciocínio interno detalhado do modelo.
 
-## 10. Documentação complementar
+## 10. Histórico Git incluído e publicação no GitHub
+
+Este ZIP inclui a pasta oculta `.git/` e commits **reais de preparação do pacote**, registrados na data em que foram feitos, sob a autoria técnica `SupportDesk Package Setup`. **Não são commits antigos do candidato nem um histórico remoto do GitHub.** Ao extrair o ZIP, confirme `Test-Path .git`, consulte `git log --oneline` e configure seu nome/e-mail para seus próximos commits. Veja `docs/GIT_E_GITHUB.md` para o passo a passo de publicação sem reescrever histórico.
+
+Antes de publicar, rode `python scripts/preflight.py` para checar segredos, Docker e exemplos. Depois de gerar e avaliar uma comparação com IA real, use `python scripts/preflight.py --strict`.
+
+## 11. Documentação complementar
 
 - `docs/PROXIMOS_PASSOS.md`: instruções exatas do que fazer com API, experimento, GitHub e Render.
 - `docs/EXPERIMENTO_GUIADO.md`: condução da comparação justa e registro da rubrica.
@@ -169,7 +176,10 @@ As execuções são armazenadas em SQLite e exportadas como `generation_{id}.jso
 - `PROMPT_ENGINEERING_NOTES.md`: versões, segurança e limitações de prompt.
 - `docs/API.md`: contratos REST com exemplos.
 - `docs/CHECKLIST_EDITAL.md`: aderência às exigências, inclusive pendências externas.
-- `docs/COMMITS_SUGERIDOS.md`: proposta de etapas para **commits reais** (não é um histórico falsificado).
+- `docs/GIT_E_GITHUB.md`: publicar o histórico local verdadeiro e criar commits próprios.
+- `docs/HISTORICO_GIT_REAL.md`: resumo dos commits criados durante a preparação deste pacote.
+- `docs/COMMITS_SUGERIDOS.md`: sugestões para trabalhos futuros, não histórico retroativo.
+- `CHANGELOG.md`: mudanças efetivamente realizadas nesta revisão.
 
 ## Referências
 

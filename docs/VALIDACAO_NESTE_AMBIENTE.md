@@ -1,6 +1,6 @@
 # Registro de validação do pacote
 
-Data da revisão do pacote: 21/11/2026.
+Revisão anterior registrada: 21/11/2026. Atualização do pacote: 23/11/2026.
 
 ## Verificações executadas com sucesso
 
@@ -24,3 +24,12 @@ Isso **não significa que os testes de integração passaram**. Execute no compu
 - Não foram fornecidas rubricas pessoais sobre saídas de uma IA real.
 
 Confira `docs/PROXIMOS_PASSOS.md` para concluir esses itens.
+
+## Atualização de 23/11/2026
+
+- Repositório Git local inicializado e commits registrados com a data real, sem retrodatação.
+- `Dockerfile` corrigido para porta 5000, `run:app` e rota de health `/api/v1/health`.
+- Exemplos de `.env` alinhados ao backend, sem segredos.
+- Checagens estáticas adicionais: `scripts/preflight.py` e `scripts/verify_structure.py`.
+- A tentativa de instalar Flask e Flask-SQLAlchemy neste contêiner falhou por indisponibilidade de rede; por isso a suíte completa de integração **não foi executada aqui**. Execute `python -m pytest -q` no Windows e confirme o CI.
+- A integração com IA real, as notas humanas e o push ao GitHub continuam pendentes de acesso do candidato.
