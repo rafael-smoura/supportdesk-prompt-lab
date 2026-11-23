@@ -1,0 +1,120 @@
+{
+  "WARNING": "DADOS INTEIRAMENTE ILUSTRATIVOS: NÃO SÃO RESULTADOS DE UMA LLM OU RUBRICA REAL.",
+  "illustrative": true,
+  "id": 1,
+  "timestamp": "EXEMPLO_SEM_DATA_REAL",
+  "generation_ids": [
+    1,
+    2
+  ],
+  "summary": {
+    "v1_average": 3,
+    "v2_average": 3,
+    "delta_v2_minus_v1": 0,
+    "higher_scored_version": "tie",
+    "method": "Média de notas ilustrativas",
+    "disclaimer": "Não use como evidência real do desafio."
+  },
+  "results": [
+    {
+      "timestamp": "EXEMPLO_SEM_DATA_REAL",
+      "customer_id": "c1",
+      "profile": {
+        "id": "c1",
+        "name": "Ana",
+        "technical_level": "leigo",
+        "communication_style": "didático",
+        "channel": "chat"
+      },
+      "ticket": "Não consigo acessar o portal desde hoje.",
+      "content_type": "diagnosis",
+      "provider": "demo",
+      "model": "demo-local",
+      "settings": {
+        "temperature": 0.2,
+        "max_tokens": 1300,
+        "json_mode": true,
+        "api_url": null
+      },
+      "id": 1,
+      "prompt_version": "v1",
+      "output": {
+        "hypotheses": [
+          "Instabilidade da conexão ou falha temporária no serviço (a confirmar)"
+        ],
+        "evidence": [
+          "Existe um relato de falha no acesso, ainda sem verificação técnica"
+        ],
+        "missing_information": [
+          "Mensagem exata exibida",
+          "Horário da última tentativa"
+        ],
+        "probable_conclusion": "Não há dados suficientes para estabelecer uma causa confirmada."
+      },
+      "evaluation": {
+        "clarity": {
+          "score": 3,
+          "justification": "Exemplo de texto curto e organizado; verificar a qualidade após gerar com modelo real."
+        },
+        "customer_fit": {
+          "score": 3,
+          "justification": "A resposta é genérica e ainda não apresenta orientações específicas ao perfil leigo."
+        },
+        "actionability": {
+          "score": 3,
+          "justification": "Aponta quais dados faltam, mas ainda não apresenta procedimento suficiente."
+        }
+      }
+    },
+    {
+      "timestamp": "EXEMPLO_SEM_DATA_REAL",
+      "customer_id": "c1",
+      "profile": {
+        "id": "c1",
+        "name": "Ana",
+        "technical_level": "leigo",
+        "communication_style": "didático",
+        "channel": "chat"
+      },
+      "ticket": "Não consigo acessar o portal desde hoje.",
+      "content_type": "diagnosis",
+      "provider": "demo",
+      "model": "demo-local",
+      "settings": {
+        "temperature": 0.2,
+        "max_tokens": 1300,
+        "json_mode": true,
+        "api_url": null
+      },
+      "id": 2,
+      "prompt_version": "v2",
+      "output": {
+        "hypotheses": [
+          "Instabilidade da conexão ou falha temporária no serviço (a confirmar)"
+        ],
+        "evidence": [
+          "Existe um relato de falha no acesso, ainda sem verificação técnica"
+        ],
+        "missing_information": [
+          "Mensagem exata exibida",
+          "Horário da última tentativa"
+        ],
+        "probable_conclusion": "Não há dados suficientes para estabelecer uma causa confirmada."
+      },
+      "evaluation": {
+        "clarity": {
+          "score": 3,
+          "justification": "Exemplo de texto curto e organizado; verificar a qualidade após gerar com modelo real."
+        },
+        "customer_fit": {
+          "score": 3,
+          "justification": "A resposta é genérica e ainda não apresenta orientações específicas ao perfil leigo."
+        },
+        "actionability": {
+          "score": 3,
+          "justification": "Aponta quais dados faltam, mas ainda não apresenta procedimento suficiente."
+        }
+      }
+    }
+  ]
+}

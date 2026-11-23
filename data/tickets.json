@@ -1,0 +1,17 @@
+[
+  {
+    "id": "t1",
+    "title": "Sem acesso ao sistema",
+    "description": "Não consigo entrar no portal de atendimento desde esta manhã. Aparece uma mensagem de erro ao fazer login."
+  },
+  {
+    "id": "t2",
+    "title": "Aplicativo lento",
+    "description": "O aplicativo fica muito lento ao carregar relatórios, principalmente à tarde."
+  },
+  {
+    "id": "t3",
+    "title": "Impressora desconectada",
+    "description": "A impressora do escritório aparece como offline no computador, mas está ligada."
+  }
+]

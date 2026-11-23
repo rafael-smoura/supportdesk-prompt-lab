@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ambiente de experimentos de atendimento técnico e engenharia de prompt.">
+  <title>SupportDesk | Prompt Lab</title>
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">S</span><div><strong>SupportDesk</strong><small>PROMPT LAB</small></div></div>
+      <div class="sidebar-block">
+        <div class="eyebrow">AMBIENTE</div>
+        <div id="providerBadge" class="provider-badge">Carregando…</div>
+        <p class="side-note" id="providerNote">Carregando configuração.</p>
+      </div>
+      <div class="sidebar-block"><div class="eyebrow">NAVEGAÇÃO</div>
+        <a href="#workspace">01 / Experimento</a>
+        <a href="#results">02 / Respostas</a>
+        <a href="#review">03 / Avaliação</a>
+        <a href="#archive">04 / Histórico</a>
+      </div>
+      <div class="sidebar-footer">v1 / v2 <span>•</span> Avaliação humana<br><span>Ambiente de estudo e validação</span></div>
+    </aside>
+    <main>
+      <header class="topbar"><div class="eyebrow">ENGENHARIA DE PROMPT / EXPERIMENTAÇÃO</div><div class="top-right"><span class="status-dot"></span><span id="apiStatus">Verificando serviço</span></div></header>
+      <div class="main-content">
+        <section class="page-heading"><span class="kicker">LABORATÓRIO DE ATENDIMENTO</span><h1>Respostas técnicas, <em>medidas e comparadas.</em></h1><p>Personalize o suporte por perfil e compare duas versões de prompt mantendo as demais variáveis constantes.</p></section>
+        <div id="flash" role="status" aria-live="polite" class="flash" hidden></div>
+        <section class="card workspace" id="workspace">
+          <div class="section-title"><div><span class="step-number">01</span><h2>Novo experimento</h2></div><span class="section-caption">Configure o cenário</span></div>
+          <div id="accessPanel" class="access-panel"><label for="accessToken">Token de acesso da aplicação (apenas se configurado no servidor)</label><div class="access-row"><input type="password" id="accessToken" autocomplete="off" placeholder="X-Access-Token — não será salvo no navegador"><button type="button" id="retryAccess" class="btn btn-quiet">Conectar</button></div></div>
+          <form id="generator">
+            <div class="field-grid"><label for="customer">Perfil do cliente<select id="customer" required></select></label><label for="ticketSelect">Ticket de referência<select id="ticketSelect" required></select></label></div>
+            <label for="ticket">Descrição do problema<textarea id="ticket" required maxlength="5000" rows="4" placeholder="Descreva o problema observado…"></textarea></label>
+            <div class="field-grid"><label for="contentType">Tipo de conteúdo<select id="contentType"><option value="diagnosis">Diagnóstico estruturado</option><option value="resolution">Passos de resolução</option><option value="questions">Perguntas de esclarecimento</option><option value="flowchart">Fluxo de decisão ASCII</option></select></label><label for="promptVersion">Versão do prompt<select id="promptVersion"><option value="v1">v1 — Orientação base</option><option value="v2" selected>v2 — Orientação contextual</option></select></label></div>
+            <div class="actions"><button class="btn btn-primary" type="submit" id="generateButton">Gerar resposta <span aria-hidden="true">→</span></button><button class="btn btn-outline" type="button" id="experimentButton">Comparar v1 e v2</button><span class="hint">O teste comparativo usa o mesmo cliente, ticket, modelo e parâmetros.</span></div>
+          </form>
+        </section>
+        <section class="card" id="results"><div class="section-title"><div><span class="step-number">02</span><h2>Respostas geradas</h2></div><span class="section-caption">JSON validado antes de persistir</span></div><div id="resultsGrid" class="results-grid"><p class="empty">Nenhuma resposta nesta sessão. Configure o cenário e execute a geração.</p></div></section>
+        <section class="card" id="review"><div class="section-title"><div><span class="step-number">03</span><h2>Rubrica de avaliação</h2></div><span class="section-caption">Clareza · Adequação · Acionabilidade</span></div><p class="section-help">Atribua notas de 1 a 5 e escreva justificativas baseadas no resultado. A comparação só pode ser salva depois que ambas as respostas forem avaliadas.</p><div id="reviewGrid" class="review-grid"><p class="empty">Gere uma resposta ou abra uma execução do histórico para avaliá-la.</p></div><div class="actions"><button type="button" class="btn btn-primary" id="saveComparison" disabled>Salvar comparação em JSON</button><span id="reviewNote" class="hint">Compare versões distintas do mesmo cenário.</span></div><div id="comparisonSummary" hidden></div></section>
+        <section class="card" id="archive"><div class="section-title"><div><span class="step-number">04</span><h2>Histórico</h2></div><button type="button" class="btn btn-quiet" id="refreshHistory">Atualizar</button></div><div class="history-columns"><div><h3>Execuções recentes</h3><div id="historyRuns" class="history-list"></div></div><div><h3>Comparações registradas</h3><div id="historyComparisons" class="history-list"></div></div></div><p class="hint">Os dados também são exportados em <code>instance/history/</code>; o banco local fica em <code>instance/supportdesk.db</code>.</p></section>
+        <footer class="footer">SupportDesk Prompt Lab • Projeto demonstrativo • Não envie dados pessoais reais em tickets de teste.</footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

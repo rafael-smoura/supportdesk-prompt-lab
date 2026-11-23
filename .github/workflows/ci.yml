@@ -1,0 +1,30 @@
+name: Testes
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements-dev.txt
+      - name: Compilar sintaxe
+        run: python -m compileall -q backend main.py run.py
+      - name: Verificar estrutura
+        run: python scripts/verify_structure.py
+      - name: Executar testes
+        env:
+          APP_ENV: testing
+          AI_PROVIDER: demo
+        run: python -m pytest -q

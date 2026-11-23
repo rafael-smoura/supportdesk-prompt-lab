@@ -1,0 +1,30 @@
+{
+  "v1": {
+    "clarity": {
+      "score": 3,
+      "justification": "Exemplo de texto curto e organizado; verificar a qualidade após gerar com modelo real."
+    },
+    "customer_fit": {
+      "score": 3,
+      "justification": "A resposta é genérica e ainda não apresenta orientações específicas ao perfil leigo."
+    },
+    "actionability": {
+      "score": 3,
+      "justification": "Aponta quais dados faltam, mas ainda não apresenta procedimento suficiente."
+    }
+  },
+  "v2": {
+    "clarity": {
+      "score": 3,
+      "justification": "Exemplo de texto curto e organizado; verificar a qualidade após gerar com modelo real."
+    },
+    "customer_fit": {
+      "score": 3,
+      "justification": "A resposta é genérica e ainda não apresenta orientações específicas ao perfil leigo."
+    },
+    "actionability": {
+      "score": 3,
+      "justification": "Aponta quais dados faltam, mas ainda não apresenta procedimento suficiente."
+    }
+  }
+}
